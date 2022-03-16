@@ -14,13 +14,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), MainListAdapter.Interface {
 
-    val VIEW_TYPE_ITEM = 0
-    val VIEW_TYPE_LOADING = 1
-
     private lateinit var binding: ActivityMainBinding
     val vm : MainViewModel by viewModel()
 
-    var pageStr = "1"
+    var pageStr = "0"
     lateinit var scrollListener: RecyclerViewLoadMoreScroll
     lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var adapter: MainListAdapter
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity(), MainListAdapter.Interface {
 
     private fun initListener() {
         binding.swipeRefresh.setOnRefreshListener {
-            pageStr = "1"
+            pageStr = "0"
             listAll.clear()
             vm.getData(pageStr)
         }
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity(), MainListAdapter.Interface {
         }
 
         vm.errorEvent.observe(this){
-            if (pageStr == "1"){
+            if (pageStr == "0"){
                 binding.rvList.visibility = View.GONE
                 binding.rlTrouble.visibility = View.VISIBLE
 
@@ -109,9 +106,8 @@ class MainActivity : AppCompatActivity(), MainListAdapter.Interface {
             binding.rvList.visibility = View.VISIBLE
             binding.rlTrouble.visibility = View.GONE
 
-            var listTemp = list.toMutableList()
+            val listTemp = list.toMutableList()
             listAll.addAll(listTemp)
-
 
             adapter.notifyDataSetChanged()
             adapter.setInterface(this)

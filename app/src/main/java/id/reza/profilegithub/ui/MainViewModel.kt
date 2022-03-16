@@ -40,6 +40,9 @@ class MainViewModel(private val appRepository: AppRepository, private val networ
                     try {
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
+                                //set the page query by the last id from the list
+                                pageEvent.value = response.body()!!.last().id.toString()
+
                                 listEvent.value = response.body()
                             }
                             HttpURLConnection.HTTP_UNAUTHORIZED -> {
@@ -55,7 +58,6 @@ class MainViewModel(private val appRepository: AppRepository, private val networ
                     }catch (e: Exception){
                         errorEvent.value = e.localizedMessage
                     }finally {
-                        pageEvent.value = (page.toInt() + 1).toString()
 
                         loadingEvent.value = false
                     }

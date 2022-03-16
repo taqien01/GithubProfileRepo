@@ -11,7 +11,12 @@ import retrofit2.http.Query
 interface AppInterface {
 
     @GET("users")
-    suspend fun getData(@Query("page") page: String, @Query("per_page") per_page: String): Response<List<OneData>>
+    //fix wrong query
+    //query to pagination not use 'page' anymore but used 'since'
+    //where 'since' is the user ID that return users with an
+    //ID greater than this ID (from api documentation)
+    //https://docs.github.com/en/rest/reference/users
+    suspend fun getData(@Query("since") page: String, @Query("per_page") per_page: String): Response<List<OneData>>
 
     @GET("users/{username}")
     suspend fun getOneUser(@Path("username") username: String): Response<DetailUser>
